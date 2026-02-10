@@ -1,6 +1,5 @@
 from pathlib import Path
 import torch
-import torchvision
 from torchvision.datasets import CIFAR10
 from torchvision import transforms
 from torch.utils.data import random_split, DataLoader
