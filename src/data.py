@@ -8,7 +8,7 @@ def get_cifar10_classes() -> list[str]:
     class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
     return class_names
 
-def get_dataloaders(data_dir: str | Path, batch_size: int = 128, num_workers: int = 2, valid_split: float = 0.2, seed: int = 42) -> tuple[DataLoader, DataLoader, DataLoader]:
+def get_dataloaders(data_dir: str | Path = "data/", batch_size: int = 128, num_workers: int = 2, valid_split: float = 0.2, seed: int = 42) -> tuple[DataLoader, DataLoader, DataLoader]:
     mean: tuple[float, float, float] = (0.4919, 0.4822, 0.4465)
     std: tuple[float, float, float] = (0.2470, 0.2435, 0.2616)
 
