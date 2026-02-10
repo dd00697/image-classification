@@ -1,10 +1,10 @@
+data/
+.claude/
 .venv/
 __pycache__/
-*.pyc 
-data/
+*.pyc
 wandb/
-.claude/
 outputs/
-*.pt
-*.pth
+*.pt 
+*.pth 
 .vscode/
