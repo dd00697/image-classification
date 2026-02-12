@@ -3,3 +3,4 @@ defaults:
   - optimizer: sgd
   - data: cifar10
   - training: default
+  - wandb: default

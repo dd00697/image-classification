@@ -13,6 +13,8 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from hydra.utils import get_original_cwd
 
+import wandb
+
 
 def train_one_epoch(model: nn.Module, loader, criterion: nn.Module, optimizer: optim.Optimizer, device: torch.device | str) -> tuple[float, float]:
     model.train()
@@ -93,6 +95,13 @@ def main(cfg: DictConfig):
         best_validation_accuracy = checkpoint["best_validation_accuracy"]
         print(f"Resuming from epoch: {start_epoch}, current validation accuracy: {best_validation_accuracy}")
 
+    if cfg.wandb.enabled:
+        wandb.init(
+            project=cfg.wandb.project,
+            name = (f"{cfg.model.name}-{cfg.optimizer.name}-{cfg.optimizer.lr}-{cfg.training.epochs}"),
+            config = OmegaConf.to_container(cfg, resolve=True),
+        )
+
     for epoch in range(start_epoch, cfg.training.epochs):
         epoch_start_time = time.perf_counter()
         train_loss, train_accuracy = train_one_epoch(model, train, criterion, optimizer, device)
@@ -100,6 +109,16 @@ def main(cfg: DictConfig):
         epoch_end_time = time.perf_counter()
         total_epoch_time = epoch_end_time - epoch_start_time
         print(f"Epoch: {epoch+1}/{cfg.training.epochs} | Train Loss: {train_loss} | Train Accuracy: {train_accuracy} | Validation Loss: {validation_loss} | Validation Accuracy: {validaiton_accuracy} | Epoch Traning Time: {total_epoch_time:.2f}s")
+
+        if cfg.wandb.enabled:
+            # Log to Weights and Biases
+            wandb.log({
+                "train/loss" : train_loss,
+                "train/accuracy" : train_accuracy,
+                "val/loss": validation_loss,
+                "val/accuracy": validaiton_accuracy,
+                "epoch" : epoch,
+            })
 
         if validaiton_accuracy > best_validation_accuracy:
             best_validation_accuracy = validaiton_accuracy
@@ -125,5 +144,13 @@ def main(cfg: DictConfig):
     test_loss, test_accuracy = validate(model, test, criterion, device)
     print(f"Test Accuracy: {test_accuracy} | Test Loss: {test_loss}")
     print("Complete WoohOOO!")
+
+    if cfg.wandb.enabled:
+        wandb.log({
+            "test/accuracy": test_accuracy,
+            "test/loss" : test_loss,
+        })
+
+        wandb.finish()
 
 main()
