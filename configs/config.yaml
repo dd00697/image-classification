@@ -1,0 +1,5 @@
+defaults:
+  - model: simple_cnn
+  - optimizer: sgd
+  - data: cifar10
+  - training: default
