@@ -8,8 +8,8 @@ import torch.nn as nn
 import torch.optim as optim
 from hydra.utils import get_original_cwd
 from omegaconf import DictConfig, OmegaConf
+import wandb # noqa: F401
 
-import wandb
 from src.data import get_dataloaders
 from src.models.simple_cnn import SimpleCNN
 from src.utils import set_seed
