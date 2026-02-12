@@ -15,9 +15,7 @@ from src.models.simple_cnn import SimpleCNN
 from src.utils import set_seed
 
 
-def train_one_epoch(
-    model: nn.Module, loader, criterion: nn.Module, optimizer: optim.Optimizer, device: torch.device | str
-) -> tuple[float, float]:
+def train_one_epoch(model: nn.Module, loader, criterion: nn.Module, optimizer: optim.Optimizer, device: torch.device | str) -> tuple[float, float]:
     model.train()
     running_loss, correct, total = 0.0, 0.0, 0.0
     for images, labels in loader:
@@ -80,9 +78,7 @@ def main(cfg: DictConfig):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Running on: {device}")
-    train, val, test = get_dataloaders(
-        original_dir / Path(cfg.data.data_dir), cfg.data.batch_size, cfg.data.num_workers, cfg.data.valid_split
-    )
+    train, val, test = get_dataloaders(original_dir / Path(cfg.data.data_dir), cfg.data.batch_size, cfg.data.num_workers, cfg.data.valid_split)
     model = SimpleCNN(cfg.model.num_classes).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(
@@ -117,9 +113,7 @@ def main(cfg: DictConfig):
         validation_loss, validaiton_accuracy = validate(model, val, criterion, device)
         epoch_end_time = time.perf_counter()
         total_epoch_time = epoch_end_time - epoch_start_time
-        print(
-            f"Epoch: {epoch + 1}/{cfg.training.epochs} | Train Loss: {train_loss} | Train Accuracy: {train_accuracy} | Validation Loss: {validation_loss} | Validation Accuracy: {validaiton_accuracy} | Epoch Traning Time: {total_epoch_time:.2f}s"
-        )
+        print(f"Epoch: {epoch + 1}/{cfg.training.epochs} | Train Loss: {train_loss} | Train Accuracy: {train_accuracy} | Validation Loss: {validation_loss} | Validation Accuracy: {validaiton_accuracy} | Epoch Traning Time: {total_epoch_time:.2f}s")
 
         if cfg.wandb.enabled:
             # Log to Weights and Biases
