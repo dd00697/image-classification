@@ -6,6 +6,7 @@ import torch.optim as optim
 from src.data import get_dataloaders
 from src.models.simple_cnn import SimpleCNN
 from pathlib import Path
+from src.utils import set_seed
 
 
 def train_one_epoch(model: nn.Module, loader, criterion: nn.Module, optimizer: optim.Optimizer, device: torch.device | str) -> tuple[float, float]:
@@ -58,8 +59,10 @@ def validate(model: nn.Module, loader, criterion: nn.Module, device: torch.devic
     return average_loss, accuracy
 
 def main():
-    
-    resume_path = True
+    seed = 42
+    set_seed(seed)
+
+    resume_path = False
     epochs: int = 10
     learning_rate: float = 0.01
     momentum: float = 0.9
@@ -102,7 +105,7 @@ def main():
                 "best_validation_accuracy" : best_validation_accuracy,
                 "model_state_dict": model.state_dict(), 
                 "optimizer_state_dict": optimizer.state_dict(),
-                "hyperparamaeters": {"learning rate" : learning_rate, "momentum" : momentum, "epochs" : epochs, "batch_size" : batch_size}
+                "hyperparamaeters": {"learning rate" : learning_rate, "momentum" : momentum, "epochs" : epochs, "batch_size" : batch_size, "seed": seed}
             }, save_path,
             )
             print(f"Saved new best model. (val_acc: {validaiton_accuracy})")
