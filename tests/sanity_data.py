@@ -1,7 +1,9 @@
-from src.data import get_dataloaders, get_cifar10_classes
 import matplotlib.pyplot as plt
 import torch
-from torchvision.utils import make_grid 
+from torchvision.utils import make_grid
+
+from src.data import get_cifar10_classes, get_dataloaders
+
 
 def main():
     train, val, test = get_dataloaders("data/", num_workers=0)
@@ -21,16 +23,16 @@ def main():
     mean: tuple[float, float, float] = (0.4919, 0.4822, 0.4465)
     std: tuple[float, float, float] = (0.2470, 0.2435, 0.2616)
 
-    mean_tensor = torch.tensor(mean).view(3,1,1)
-    std_tensor = torch.tensor(std).view(3,1,1)
+    mean_tensor = torch.tensor(mean).view(3, 1, 1)
+    std_tensor = torch.tensor(std).view(3, 1, 1)
 
-    first_16 = first_16 * std_tensor + mean_tensor 
+    first_16 = first_16 * std_tensor + mean_tensor
 
-    first_16 = first_16.clamp(0,1)
+    first_16 = first_16.clamp(0, 1)
 
-    grid = make_grid(first_16,nrow=4, padding=2).permute(1,2,0).numpy()
+    grid = make_grid(first_16, nrow=4, padding=2).permute(1, 2, 0).numpy()
 
-    plt.figure(figsize=(8,8))
+    plt.figure(figsize=(8, 8))
     plt.imshow(grid)
     plt.title("CIFAR-10 Training Samples")
     plt.axis("off")
@@ -41,5 +43,7 @@ def main():
     labels_16 = labels[:16]
     label_names = [class_names[i] for i in labels_16]
     print(label_names)
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()

@@ -1,6 +1,5 @@
-import torch
-import torch.nn as nn 
-import torch.nn.functional as F
+import torch.nn as nn
+
 
 class SimpleCNN(nn.Module):
     def __init__(self, num_classes: int = 10):
@@ -21,7 +20,7 @@ class SimpleCNN(nn.Module):
             nn.Flatten(),
             nn.Linear(in_features=2048, out_features=256),
             nn.ReLU(),
-            nn.Linear(in_features=256, out_features=num_classes)
+            nn.Linear(in_features=256, out_features=num_classes),
         )
 
     def forward(self, x):

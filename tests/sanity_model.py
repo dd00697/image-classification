@@ -1,6 +1,8 @@
-from src.models.simple_cnn import SimpleCNN
-from src.data import get_dataloaders
 import torch
+
+from src.data import get_dataloaders
+from src.models.simple_cnn import SimpleCNN
+
 
 def main():
     model = SimpleCNN()
@@ -11,8 +13,8 @@ def main():
     with torch.no_grad():
         outputs = model(images)
     print(outputs.shape)
-    
-    count=0
+
+    count = 0
     for i in model.parameters():
         count += i.numel()
 
@@ -20,5 +22,7 @@ def main():
     print(outputs[1])
     print(outputs[2])
     print(count)
+
+
 if __name__ == "__main__":
     main()
