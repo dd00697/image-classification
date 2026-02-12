@@ -81,7 +81,7 @@ def main(cfg: DictConfig):
     train, val, test = get_dataloaders(original_dir / Path(cfg.data.data_dir), cfg.data.batch_size, cfg.data.num_workers, cfg.data.valid_split)
     model = SimpleCNN(cfg.model.num_classes).to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=cfg.optimizer.lr, momentum=cfg.optimizer.momentum)
+    optimizer = optim.SGD(model.parameters(), lr=cfg.optimizer.lr, momentum=cfg.optimizer.momentum, weight_decay=cfg.optimizer.weight_decay)
     start_time = time.perf_counter()
 
     best_validation_accuracy = 0.0
