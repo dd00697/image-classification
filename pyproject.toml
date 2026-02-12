@@ -1,10 +1,10 @@
-  [tool.ruff]
-  line-length = 260
-  target-version = "py314"
+[tool.ruff]
+line-length = 260
+target-version = "py314"
 
-  [tool.ruff.lint]
-  select = ["E", "F", "W", "I"]
-  ignore = []
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []
 
-  [tool.ruff.lint.isort]
-  known-first-party = ["src"]
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
